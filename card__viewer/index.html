@@ -1,0 +1,442 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <title>Weather App || Yossef</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="css/style.css" rel="stylesheet" />
+</head>
+<style>
+  * {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+  }
+
+  html {
+    font-size: 13px;
+  }
+
+  body {
+    position: relative;
+    background: #f1efec;
+    width: 100%;
+    height: 100vh;
+  }
+
+  img {
+    width: 100%;
+  }
+
+  .container {
+    transition: all 0.4s;
+    padding: calc(5vw + 30px);
+    visibility: hidden;
+    opacity: 0;
+    transform: translate3d(0, -6rem, 0);
+    transition: all .4s;
+    color: black;
+    /* the default behavior is grid */
+    /* place-content: center; */
+    width: 100%;
+    height: 0;
+  }
+
+  @media (max-width: 800px) {
+    .container {
+      padding: calc(20px);
+    }
+  }
+
+  .container>p {
+    color: #c65050;
+    font-family: system-ui;
+    font-weight: bold;
+    font-size: 13px;
+    letter-spacing: 1.2px;
+  }
+
+  .container>h1 {
+    font-size: clamp(1rem, 4rem, 6rem);
+    padding-block: 20px;
+    font-weight: 500;
+    line-height: 1.2;
+    max-width: 75%;
+  }
+
+  .container>h5 {
+    max-width: 75%;
+    font-size: 23px;
+    font-weight: 400;
+    padding-bottom: 40px;
+  }
+
+  @media (max-width: 800px) {
+    .container>h1 {
+      max-width: 95%;
+    }
+
+    .container>h5 {
+      max-width: 95%;
+    }
+  }
+
+  .container__cards {
+    padding-block: 40px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    width: 100%;
+    gap: 40px;
+  }
+
+  @media (max-width: 800px) {
+    .container__cards {
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 40px;
+    }
+  }
+
+  .card {
+    position: relative;
+    color: white;
+    height: 640px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: end;
+    padding: 20px;
+    overflow: hidden;
+  }
+
+  .card::after {
+    position: absolute;
+    content: "";
+    width: 100%;
+    height: 0%;
+    background-color: #1a14148f;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    transition: all 0.3s;
+    transition-delay: 0.1s;
+  }
+
+  .card:hover::after {
+    height: 100%;
+  }
+
+  .card:hover>img {
+    transform: scale(1);
+  }
+
+  .card>img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: -2;
+    background-size: cover;
+    object-fit: cover;
+    transform: scale(1.3);
+    transition: all 0.3s;
+  }
+
+  .footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .card .content {
+    visibility: hidden;
+    transform: translate3d(0, -5rem, 0);
+    transition: all 0.2s;
+    opacity: 0;
+  }
+
+  .card:hover .content {
+    visibility: visible;
+    transform: translate3d(0, 0rem, 0);
+    opacity: 1;
+  }
+
+  .card .content p:first-child {
+    font-size: 16px;
+    font-family: system-ui;
+    font-weight: 600;
+    padding: 10px 0px;
+  }
+
+  .card .content h3 {
+    padding: 20px 0px;
+    font-size: 2.4rem;
+    font-family: serif;
+    font-weight: 300;
+  }
+
+  .card .content h3 em {
+    font-style: italic;
+    font-family: "Playfair Display", serif;
+  }
+
+  .card .content p:last-child {
+    font-size: 17px;
+    max-width: 80%;
+    padding-bottom: 30px;
+    padding-top: 10px;
+  }
+
+  .footer {
+    padding-block: 30px;
+    transform: translate3d(0, 3rem, 0);
+    visibility: hidden;
+    transition: all 0.3s;
+    opacity: 0;
+  }
+
+  .card:hover .footer {
+    visibility: visible;
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+  }
+
+  .footer>div {
+    font-size: 18px;
+  }
+
+  .footer>div * {
+    padding-top: 10px;
+  }
+
+  .icon__card {
+    width: 40px;
+    opacity: 0;
+    transition: all 0.4s 0.1s;
+    transform: translate3d(-3rem, 0, 0);
+  }
+
+  .card:hover .icon__card {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+  .container {
+  visibility: hidden;
+  opacity: 0;
+  transform: translate3d(0, -6rem, 0);
+  transition: all .4s;
+  color: black;
+  /* the default behavior is grid */
+    place-content: center;
+    width: 100%;
+    height: 0;
+  }
+
+  .loader__container {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    place-content: center;
+    background: black;
+    position: relative;
+    opacity: 1;
+  }
+
+  .loader__container div {
+    border: 5px solid #acacac;
+    border-right-color: transparent;
+    border-left-color: transparent;
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    animation: rotate 2s linear infinite;
+  }
+
+  @keyframes rotate {
+    to {
+      transform: rotate(1turn);
+    }
+  }
+
+</style>
+
+<body>
+  <div class="loader__container">
+    <div></div>
+  </div>
+
+  <div class="container">
+    <p>TAKE A TRIP</p>
+    <h1>Destinations Unveiled: Inspiring Journeys Await</h1>
+    <h5>
+      Embark on a virtual adventure to stunning destinations worldwide, where
+      breathtaking landscapes, vibrant cultures, and unforgettable experiences
+      await.
+    </h5>
+
+    <!-- canada -->
+    <div class="container__cards">
+      <div class="card">
+        <img src="images/gallery-1.jpg" alt="image viewer" />
+        <div class="content">
+          <p class="small">13-day trip</p>
+          <h3>Niagara Falls, <em>Canada</em></h3>
+          <p>
+            Immerse yourself in the breathtaking cascades and embark on
+            unforgettable adventures in this natural wonder.
+          </p>
+        </div>
+        <div class="footer">
+          <div>
+            <p class="small">From</p>
+            <p class="price">€3,000</p>
+          </div>
+          <img src="images/icon-arrow-right-color.svg" alt="icon image" class="icon__card" />
+        </div>
+      </div>
+
+      <!-- janerio -->
+      <div class="card">
+        <img src="images/gallery-2.jpg" alt="image viewer" />
+        <div class="content">
+          <p class="small">5-day trip</p>
+          <h3>Rio de Janeiro, <em>Brazil</em></h3>
+          <p>
+            Experience the rhythm and energy of Rio de Janeiro, home to
+            vibrant Carnival celebrations, iconic landmarks, and stunning
+            beaches.
+          </p>
+        </div>
+        <div class="footer">
+          <div>
+            <p class="small">From</p>
+            <p class="price">€3,000</p>
+          </div>
+          <img src="images/icon-arrow-right-color.svg" alt="icon image" class="icon__card" />
+        </div>
+      </div>
+
+      <!-- indonesia -->
+      <div class="card">
+        <img src="images/gallery-3.jpg" alt="image viewer" />
+        <div class="content">
+          <p class="small">11-day trip</p>
+          <h3>Bali, <em>Indonesia</em></h3>
+          <p>
+            Find tranquility on the idyllic island of Bali, with its lush
+            landscapes, serene temples, and warm hospitality.
+          </p>
+        </div>
+        <div class="footer">
+          <div>
+            <p class="small">From</p>
+            <p class="price">€3,000</p>
+          </div>
+          <img src="images/icon-arrow-right-color.svg" alt="icon image" class="icon__card" />
+        </div>
+      </div>
+
+      <!-- peru -->
+      <div class="card">
+        <img src="images/gallery-4.jpg" alt="image viewer" />
+        <div class="content">
+          <p class="small">10-day trip</p>
+          <h3>Machu Picchu, <em>Peru</em></h3>
+          <p>
+            Uncover the mystique of the ancient Inca ruins perched high in the
+            Andes Mountains at Machu Picchu.
+          </p>
+        </div>
+        <div class="footer">
+          <div>
+            <p class="small">From</p>
+            <p class="price">€3,000</p>
+          </div>
+          <img src="images/icon-arrow-right-color.svg" alt="icon image" class="icon__card" />
+        </div>
+      </div>
+
+      <!-- united States -->
+      <div class="card">
+        <img src="images/gallery-5.jpg" alt="image viewer" />
+        <div class="content">
+          <p class="small">7-day trip</p>
+          <h3>Grand Canyon, <em>United States</em></h3>
+          <p>
+            Stand in awe at the colossal beauty of the Grand Canyon, carved by
+            the forces of nature over millions of years.
+          </p>
+        </div>
+        <div class="footer">
+          <div>
+            <p class="small">From</p>
+            <p class="price">€3,000</p>
+          </div>
+          <img src="images/icon-arrow-right-color.svg" alt="icon image" class="icon__card" />
+        </div>
+      </div>
+
+      <!-- australia -->
+      <div class="card">
+        <img src="images/gallery-6.jpg" alt="image viewer" />
+        <div class="content">
+          <p class="small">9-day trip</p>
+          <h3>Great Barrier Reef, <em>Australia</em></h3>
+          <p>
+            Dive into the vibrant underwater world of the Great Barrier Reef,
+            a UNESCO World Heritage Site teeming with marine life.
+          </p>
+        </div>
+        <div class="footer">
+          <div>
+            <p class="small">From</p>
+            <p class="price">€3,000</p>
+          </div>
+          <img src="images/icon-arrow-right-color.svg" alt="icon image" class="icon__card" />
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    let container = document.querySelector(".container");
+    let loader__container = document.querySelector(".loader__container");
+
+
+
+    window.addEventListener("load", () => {
+      container.style.cssText = `
+          display: block;
+          opacity: 1;
+          visibility: visible;
+          transform: translate3d(0 ,0 ,0);
+          width: 100%;
+          height: 100%;
+          `;
+      loader__container.style.cssText = `
+          opacity: 0;
+          z-index: -1;
+          display: none;
+          `;
+    });
+    // setTimeout(() => {
+    //   container.style.cssText = `
+    //       display: block;
+    //       opacity: 1;
+    //       visibility: visible;
+    //       transform: translate3d(0 ,0 ,0);
+    //       width: 100%;
+    //       height: 100%;
+    //       `;
+    //   loader__container.style.cssText = `
+    //       opacity: 0;
+    //       z-index: -1;
+    //       display: none;
+    //       `;
+    // }, 1000);
+  </script>
+</body>
+
+</html>

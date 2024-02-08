@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>loader name || yossef</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap"
+      rel="stylesheet"
+    />
+    <link href="css/style.css" rel="stylesheet" />
+
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        background: var(--loader-bg);
+        display: grid;
+        width: 100%;
+        height: 100vh;
+        overflow: hidden;
+        place-content: center;
+      }
+
+      :root {
+        --loader-text-color: #f6e9fe;
+        --loader-dot-color: #a51ff6;
+        --loader-bg: #100319;
+      }
+
+      html {
+        font-size: 16px;
+        /* font-family: "Poppins", sans-serif; */
+        font-family: "Pacifico", cursive;
+        line-height: 1.5;
+      }
+
+      .loader-container {
+        position: fixed;
+        inset: 0;
+        z-index: 999;
+        background-color: var(--loader-bg);
+        display: grid;
+        place-content: center;
+        transition:
+          opacity 0.4s ease-in-out,
+          visibility 0.4s ease-in-out;
+      }
+
+      svg {
+        width: 20rem;
+        font-weight: 700;
+      }
+
+      svg text {
+        font-size: 20rem;
+        stroke-width: 2;
+        letter-spacing: -6px;
+      }
+
+      svg text.text__body {
+        stroke: var(--loader-text-color);
+        animation: 3s infinite alternate animate;
+      }
+
+      @keyframes animate {
+        0% {
+          fill: transparent;
+          stroke: var(--loader-text-color);
+          stroke-width: 3;
+          stroke-dashoffset: 25%;
+          stroke-dasharray: 0 32%;
+        }
+
+        70% {
+          fill: transparent;
+          stroke: var(--loader-text-color);
+          stroke-width: 3;
+        }
+
+        90%,
+        100% {
+          fill: var(--loader-text-color);
+          stroke: transparent;
+          stroke-width: 0;
+          /**/
+          stroke-dashoffset: -25%;
+          stroke-dasharray: 32% 0;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="loader__container">
+      <svg viewBox="0 0 1500 460">
+        <text
+          class="text__body"
+          y="50%"
+          x="50%"
+          text-anchor="middle"
+          dy=".32em"
+        >
+          Yossef
+        </text>
+        <text
+          class="text__body"
+          y="50%"
+          x="50%"
+          text-anchor="middle"
+          dx="1.858em"
+          dy=".3em"
+        >
+          ...
+        </text>
+      </svg>
+    </div>
+  </body>
+</html>
